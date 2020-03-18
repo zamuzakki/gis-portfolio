@@ -42,8 +42,15 @@
                 // Add Profile to cluster group if location field is set
                 if('{{ profile.location }}' != 'None'){
                     var latLng = [{{ profile.location.1 }}, {{ profile.location.0 }}];
-                    var popup = '<img src="{{ profile.photo.url }}" width="210px">' +
-                                '<br/><b>Name:</b>{{ profile.first_name }} {{ profile.last_name }}' +
+                    // use Profile photo if exists, if not then use avatar image
+                    {% if profile.photo %}
+                        var popup = '<img src="{{ profile.photo.url }}" width="210px">';
+                    {% else %}
+                        var img = "{% static 'images/avatar.png' %}";
+                        popup = '<img src="' + img + '" width="210px">';
+                    {% endif %}
+
+                    popup += '<br/><b>Name:</b>{{ profile.first_name }} {{ profile.last_name }}' +
                                 '<br/><b>Expertise:</b> {{ profile.expertise.all|expertises_to_comma_separated_string }}' +
                                 '<br><b>Email:</b> <a href="mailto:{{ profile.user.email }}">{{ profile.user.email }}</a>' +
                                 '<br/><b>Phone:</b> {{ profile.phone }}' +
