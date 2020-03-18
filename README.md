@@ -2,6 +2,9 @@
 
 > **NOTE**: This open source project is built using [DjangoX](https://github.com/wsvincent/djangox) as template.
 
+## Demo
+
+![Demo Video](https://github.com/zamuzakki/gis-portfolio/blob/master/demo.gif)
 
 ## Features
 
