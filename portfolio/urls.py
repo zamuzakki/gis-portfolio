@@ -1,8 +1,10 @@
 from django.urls import path
+from django.contrib.auth.decorators import login_required
 
-from .views import HomePageView, AboutPageView
+from .views import HomePageView, ProfileView, ProfileEditView
 
 urlpatterns = [
     path('', HomePageView.as_view(), name='home'),
-    path('about/', AboutPageView.as_view(), name='about'),
+    path('profile', login_required(ProfileView.as_view()), name='profile'),
+    path('user/edit/', login_required(ProfileEditView.as_view()), name='profile_edit'),
 ]
