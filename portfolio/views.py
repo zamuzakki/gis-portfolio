@@ -11,6 +11,11 @@ class HomePageView(ListView):
     template_name = 'portfolio/profile_list.html'
     model = Profile
     queryset = Profile.objects.all().prefetch_related('expertise','user')
+    extra_context = dict()
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        self.extra_context['menu_page'] = 'home' # variable to indicate which page the user is in
+        super().get_context_data()
 
 class ProfileView(DetailView):
     """
@@ -21,7 +26,9 @@ class ProfileView(DetailView):
     extra_context = dict()
 
     def get_object(self, queryset=None):
-        obj, created = self.model.objects.get_or_create(user=self.request.user)
+        # get profile if profile exists, create profile if profile does not exist
+        obj, created = self.model.objects.get_or_create(user=self.request.user, first_name=self.request.user.first_name,
+                                                        last_name=self.request.user.last_name)
         return obj
 
     def get_context_data(self, **kwargs):
@@ -32,6 +39,9 @@ class ProfileView(DetailView):
         # other field that will be rendered without using loop
         self.extra_context['profile'] = model_to_dict(self.get_object(), fields=('first_name', 'last_name',
                                                                                  'expertise', 'location', 'photo'))
+
+        self.extra_context['menu_page'] = 'profile' # variable to indicate which page the user is in
+
         return super().get_context_data()
 
 class ProfileEditView(UpdateView):
