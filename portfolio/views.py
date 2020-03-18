@@ -14,8 +14,11 @@ class HomePageView(ListView):
     extra_context = dict()
 
     def get_context_data(self, *, object_list=None, **kwargs):
-        self.extra_context['menu_page'] = 'home' # variable to indicate which page the user is in
-        super().get_context_data()
+        context = super().get_context_data(**kwargs)
+        context['menu_page'] = 'home' # variable to indicate which page the user is in
+
+        return context
+
 
 class ProfileView(DetailView):
     """
@@ -42,7 +45,7 @@ class ProfileView(DetailView):
 
         self.extra_context['menu_page'] = 'profile' # variable to indicate which page the user is in
 
-        return super().get_context_data()
+        return super().get_context_data(**kwargs)
 
 class ProfileEditView(UpdateView):
     """
@@ -56,6 +59,3 @@ class ProfileEditView(UpdateView):
     def get_object(self, queryset=None):
         obj = self.form_class.Meta.model.objects.get(user=self.request.user)
         return obj
-
-    def get_context_data(self, **kwargs):
-        return super().get_context_data()
