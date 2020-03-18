@@ -1,8 +1,9 @@
 from django.contrib.gis.db import models as gis
 from django.db import models
-from users.models import CustomUser
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
+from phonenumber_field.modelfields import PhoneNumberField
+from users.models import CustomUser
 import os
 
 class BaseModel(models.Model):
@@ -51,7 +52,7 @@ class Profile(BaseModel):
     first_name = models.CharField(max_length=20, null=False, blank=False, default='')
     last_name = models.CharField(max_length=20, null=False, blank=False, default='')
     address = models.CharField(max_length=100, default='', null=False, blank=True)
-    phone = models.CharField(max_length=15, null=False, blank=True, default='')
+    phone = PhoneNumberField(max_length=15, null=False, blank=True, default='')
     expertise = models.ManyToManyField(Expertise)
     location = gis.PointField(null=True, default=None, blank=True)
 
