@@ -1,6 +1,6 @@
 from django.contrib.gis.db import models as gis
 from django.db import models
-from django.db.models.signals import post_save, pre_save
+from django.db.models.signals import post_save, pre_save, pre_delete
 from django.dispatch import receiver
 from phonenumber_field.modelfields import PhoneNumberField
 from users.models import CustomUser
@@ -78,3 +78,42 @@ def update_user_name(sender, instance, **kwargs):
     if not instance.last_name == '':
         instance.user.last_name = instance.last_name
     instance.user.save()
+
+@receiver(pre_delete, sender=Profile)
+def auto_delete_photo_on_delete(sender, instance, **kwargs):
+    """
+    Deletes old photo from filesystem when
+    Profile object is deleted.
+    """
+
+    if not instance.pk:
+        return False
+
+    try:
+        photo = sender.objects.get(pk=instance.pk).photo
+    except sender.DoesNotExist:
+        return False
+
+    if bool(photo) == True:
+        if os.path.isfile(photo.path):
+            os.remove(photo.path)
+
+@receiver(pre_save, sender=Profile)
+def auto_delete_photo_on_update(sender, instance, **kwargs):
+    """
+    Deletes old photo from filesystem when
+    Profile object is updated with new photo.
+    """
+
+    if not instance.pk:
+        return False
+
+    try:
+        old_photo = sender.objects.get(pk=instance.pk).photo
+    except sender.DoesNotExist:
+        return False
+
+    new_photo = instance.photo
+    if not old_photo == new_photo and bool(old_photo) == True:
+        if os.path.isfile(old_photo.path):
+            os.remove(old_photo.path)
