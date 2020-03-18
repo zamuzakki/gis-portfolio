@@ -30,8 +30,16 @@
     <script src="{% static 'js/leaflet.ajax.min.js' %}"></script>
     <script type="text/javascript">
         function main_map_init(map, options) {
+            //Initialize Leaflet map for displaying all Profile.
+
+            // Define marker cluster group, so the marker will be grouped as we zoomin/zoomout and
+            // will not be cluttered.
             var markers = L.markerClusterGroup();
+
+            // Loop through all Profile
             {% for profile in object_list %}
+
+                // Add Profile to cluster group if location field is set
                 if('{{ profile.location }}' != 'None'){
                     var latLng = [{{ profile.location.1 }}, {{ profile.location.0 }}];
                     var popup = '<img src="{{ profile.photo.url }}" width="210px">' +
@@ -43,6 +51,8 @@
                     var point = L.marker(latLng).bindPopup(popup,{maxWidth:220}).addTo(markers);
                 }
             {% endfor %}
+
+            // Add cluster group to map
             map.addLayer(markers);
         }
     </script>

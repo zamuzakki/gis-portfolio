@@ -6,14 +6,18 @@
 {% block content %}
 
 <div class="container">
+    {#  Div for Profile Name #}
     <div class="row">
         <div class="col-md-10">
             <h1>{{ profile.first_name }} {{ profile.last_name }}</h1>
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-3">
 
+    <div class="row">
+
+        {#  Side bar #}
+        <div class="col-md-3">
+            {#  Profile Photo #}
             <div class="text-center">
                 {% if profile.photo %}
                     <img src="{{ profile.photo.url }}" class="avatar img-circle img-thumbnail"
@@ -26,6 +30,7 @@
 
             <br>
 
+            {#  Expertise #}
             <div class="card">
                 <div class="card-header"><strong>Expertise</strong> <i class="fa fa-desktop fa-1x"></i></div>
                 <div class="list-group list-group-flush">
@@ -37,8 +42,10 @@
 
             <br>
         </div>
-        <!--/col-3-->
+
+
         <div class="col-md-9">
+            {# Bootstrap tab header. For adding more tab, add more <li> to code below #}
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item" >
                     <a class="nav-link active" id="profile-tab" data-toggle="tab" href="#profile" role="tab"
@@ -48,58 +55,59 @@
                 </li>
             </ul>
 
+            {# Tab content #}
             <div class="tab-content" id="my-tab-content">
+                {# Tab content for Profile.  For adding more tab content, add more div to code below  #}
+                {# Do not forget to add associated tab header #}
                 <div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                <br>
-                 <div class="card">
-                    <div class="card-header" style="height: 3rem;">
-                        <strong>
-                            <h4>
-                                Personal Info
-                                <a class="btn btn-sm btn-primary" href="{% url 'profile_edit' %}">
-                                    Edit
-                                </a>
-                            </h4>
-                        </strong>
-                    </div>
-                    <div class="card-body">
-                        <div class="container-fluid">
-                            <div class="row">
-                                <div class="table-responsive">
-                                    <table class="table table-striped table-sm">
-                                        <tr>
-                                            <th style="width: 20%">Email</th>
-                                            <td>{{ request.user.email }}</td>
-                                        </tr>
-                                        {% for item in loop_fields.items %}
-                                            {% if not item.0 in 'location, expertise, photo' %}
-                                                <tr>
-                                                    <th style="width: 20%">{{ item.0|title }}</th>
-                                                    <td>{{ item.1 }}</td>
-                                                </tr>
-                                            {% endif %}
-                                        {% endfor %}
-                                        <tr>
-                                            <th colspan="2">Location</th>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="2">
-                                                {% leaflet_map "main" callback="main_map_init" %}
-                                            </td>
-                                        </tr>
-                                    </table>
+                    <br>
+                     <div class="card">
+                        <div class="card-header" style="height: 3rem;">
+                            <strong>
+                                <h4>
+                                    Personal Info
+                                    <a class="btn btn-sm btn-primary" href="{% url 'profile_edit' %}">
+                                        Edit
+                                    </a>
+                                </h4>
+                            </strong>
+                        </div>
+                        <div class="card-body">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped table-sm">
+                                            <tr>
+                                                <th style="width: 20%">Email</th>
+                                                <td>{{ request.user.email }}</td>
+                                            </tr>
+                                            {% for item in loop_fields.items %}
+                                                {% if not item.0 in 'location, expertise, photo' %}
+                                                    <tr>
+                                                        <th style="width: 20%">{{ item.0|title }}</th>
+                                                        <td>{{ item.1 }}</td>
+                                                    </tr>
+                                                {% endif %}
+                                            {% endfor %}
+                                            <tr>
+                                                <th colspan="2">Location</th>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2">
+                                                    {% leaflet_map "main" callback="main_map_init" %}
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <!--/tab-pane-->
         </div>
-        <!--/tab-content-->
 
     </div>
-    <!--/col-9-->
 </div>
 
 {% endblock content %}
