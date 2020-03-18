@@ -1,7 +1,8 @@
 from django import forms
 from django.contrib.gis import forms as gis_forms
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Field, Submit, Row, Column, Button
+from crispy_forms.layout import Layout, Submit, Row, Column
+from phonenumber_field.formfields import PhoneNumberField
 from .models import Profile, Expertise
 
 class ProfileForm(forms.ModelForm):
@@ -22,6 +23,8 @@ class ProfileForm(forms.ModelForm):
     # Expertise can have multiple value, so we will use Multiple ModelMultipleChoiceField
     expertise = forms.ModelMultipleChoiceField(required=False, queryset=Expertise.objects.all(),
                                                widget=forms.SelectMultiple(attrs={'style': 'width:100%;'}))
+
+    phone = PhoneNumberField()
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
