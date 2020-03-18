@@ -39,7 +39,7 @@ class Expertise(BaseModel):
         return self.__unicode__()
 
     class Meta:
-        ordering = ('-id',)
+        ordering = ('name',)
 
 class Profile(BaseModel):
     """
