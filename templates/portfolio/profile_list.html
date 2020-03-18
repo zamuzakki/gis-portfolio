@@ -1,10 +1,49 @@
 {% extends '_base.html' %}
-{% load static %}
+{% load static leaflet_tags portfolio_tags %}
 
-{% block title %}Home page{% endblock title %}
+{% block title %}Home | My Profile {% endblock title %}
 
 {% block content %}
-<h1>Home page</h1>
-<img src="{% static 'images/falconx.png' %}" class="img-fluid" alt="FalconX launch"/>
+
+<div class="container-fluid">
+    {% leaflet_map "main" callback="main_map_init" %}
+</div>
+
 {% endblock content %}
 
+{% block css %}
+    {% leaflet_css %}
+    <link rel="stylesheet" href="{% static 'css/MarkerCluster.css' %}"/>
+    <link rel="stylesheet" href="{% static 'css/MarkerCluster.Default.css' %}"/>
+
+    <style>
+        .leaflet-container {  /* all maps */
+            height: 85vh;
+        }
+
+    </style>
+{% endblock css %}
+
+{% block javascript %}
+    {% leaflet_js %}
+    <script src="{% static 'js/leaflet.markercluster.js' %}"></script>
+    <script src="{% static 'js/leaflet.ajax.min.js' %}"></script>
+    <script type="text/javascript">
+        function main_map_init(map, options) {
+            var markers = L.markerClusterGroup();
+            {% for profile in object_list %}
+                if('{{ profile.location }}' != 'None'){
+                    var latLng = [{{ profile.location.1 }}, {{ profile.location.0 }}];
+                    var popup = '<img src="{{ profile.photo.url }}" width="210px">' +
+                                '<br/><b>Name:</b>{{ profile.first_name }} {{ profile.last_name }}' +
+                                '<br/><b>Expertise:</b> {{ profile.expertise.all|expertises_to_comma_separated_string }}' +
+                                '<br><b>Email:</b> <a href="mailto:{{ profile.user.email }}">{{ profile.user.email }}</a>' +
+                                '<br/><b>Phone:</b> {{ profile.phone }}' +
+                                '<br/><b>Address:</b> {{ profile.address }}';
+                    var point = L.marker(latLng).bindPopup(popup,{maxWidth:220}).addTo(markers);
+                }
+            {% endfor %}
+            map.addLayer(markers);
+        }
+    </script>
+{% endblock javascript %}
