@@ -24,7 +24,7 @@ class ProfileForm(forms.ModelForm):
     expertise = forms.ModelMultipleChoiceField(required=False, queryset=Expertise.objects.all(),
                                                widget=forms.SelectMultiple(attrs={'style': 'width:100%;'}))
 
-    phone = PhoneNumberField()
+    phone = PhoneNumberField(required=False)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
