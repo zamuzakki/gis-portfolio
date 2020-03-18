@@ -28,8 +28,14 @@
         <br>
         {% if user.is_authenticated %}
           <ul class="navbar-nav">
-              <a class="nav-item nav-link ml-lg-2" href="{% url 'home' %}">Home</a>
-              <a class="nav-item nav-link" href="{% url 'profile' %}">My Profile</a>
+              <a class="nav-item nav-link ml-lg-2 {% if menu_page == 'home' %} active {% endif %}"
+                 href="{% url 'home' %}">
+                  Home
+              </a>
+              <a class="nav-item nav-link {% if menu_page == 'profile' %} active {% endif %}"
+                 href="{% url 'profile' %}">
+                  My Profile
+              </a>
           </ul>
 
           <ul class="navbar-nav ml-auto">
