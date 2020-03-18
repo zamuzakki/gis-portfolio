@@ -10,8 +10,7 @@ class ProfileForm(forms.ModelForm):
     """
 
     # For loction field, we will use OpenStreetMap Widget
-    location = gis_forms.PointField(
-        widget=gis_forms.OSMWidget(
+    location = gis_forms.PointField(required=False, widget=gis_forms.OSMWidget(
             attrs={
                 'default_lat': -7.7129,
                 'default_lon': 110.0093,
