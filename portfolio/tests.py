@@ -9,21 +9,52 @@ from io import BytesIO
 import base64 # for testing image upload
 import tempfile # set tempdir for media
 
+def setup_test_data(cls):
+    """
+    Callback function to setup test data
+    :param cls: TestCase Class
+    """
+    cls.credentials = {
+        'email': 'testuser1@gmail.com',
+        'username': 'testuser1',
+        'password': 'secret'}
+    cls.email = cls.credentials['email']
+    cls.username = cls.credentials['username']
+    cls.password = cls.credentials['password']
+    cls.user = get_user_model().objects.create_user(username=cls.username, email=cls.email,
+                                                    password=cls.password)
+    cls.profile = Profile.objects.create(user=cls.user)
+    cls.photo = InMemoryUploadedFile(
+        BytesIO(base64.b64decode(TEST_IMAGE)),  # use io.BytesIO
+        field_name='tempfile',
+        name='tempfile.png',
+        content_type='image/png',
+        size=len(TEST_IMAGE),
+        charset='utf-8',
+    )
+
+    cls.data = {
+        'first_name': 'Budi',
+        'last_name': 'Istiadi',
+        'address': 'Purworejo',
+    }
+
+    cls.invalid_data = {
+        'first_name': 'Budi',
+        'last_name': 'Istiadi',
+        'address': 'Purworejo',
+        'phone': 'ckjsbffbkw',
+    }
+
+
 class HomeTests(TestCase):
+    """
+    TestCase for HomeView
+    """
+
     @classmethod
     def setUpTestData(cls):
-        """
-        Before TestCase is run, set some data
-        """
-        cls.credentials = {
-            'email': 'testuser1@gmail.com',
-            'username': 'testuser1',
-            'password': 'secret'}
-        cls.username = cls.credentials['email']
-        cls.email = cls.credentials['username']
-        cls.password = cls.credentials['password']
-        cls.user = get_user_model().objects.create_user(username=cls.username, email=cls.email,
-                                                        password=cls.password)
+        setup_test_data(cls)
 
     def login(self):
         """
@@ -52,7 +83,7 @@ class HomeTests(TestCase):
         Test user login
         """
         self.login()
-        self.assertEqual(str(self.response.context['user']), 'testuser1')
+        self.assertEqual(str(self.response.context['user']), self.email)
 
     def test_home_view_contains_link_profile_view_after_login(self):
         """
@@ -71,21 +102,17 @@ class HomeTests(TestCase):
         self.assertNotContains(self.response, 'href="{}"'.format(profile_view_url))
 
 
-class ProfileTests(TestCase):
+class ProfileViewTests(TestCase):
+    """
+    TestCase for ProfileView
+    """
+
     @classmethod
     def setUpTestData(cls):
         """
         Before TestCase is run, set some data
         """
-        cls.credentials = {
-            'email': 'testuser1@gmail.com',
-            'username': 'testuser1',
-            'password': 'secret'}
-        cls.username = cls.credentials['email']
-        cls.email = cls.credentials['username']
-        cls.password = cls.credentials['password']
-        cls.user = get_user_model().objects.create_user(username=cls.username, email=cls.email,
-                                                        password=cls.password)
+        setup_test_data(cls)
 
     def login(self):
         """
@@ -118,39 +145,16 @@ class ProfileTests(TestCase):
 
 
 class ProfileEditTest(TestCase):
+    """
+    TestCase for ProfileEditView
+    """
+
     @classmethod
     def setUpTestData(cls):
-        cls.credentials = {
-            'email': 'testuser1@gmail.com',
-            'username': 'testuser1',
-            'password': 'secret'}
-        cls.username = cls.credentials['email']
-        cls.email = cls.credentials['username']
-        cls.password = cls.credentials['password']
-        cls.user = get_user_model().objects.create_user(username=cls.username, email=cls.email,
-                                                        password=cls.password)
-        cls.profile = Profile.objects.create(user=cls.user)
-        cls.photo = InMemoryUploadedFile(
-            BytesIO(base64.b64decode(TEST_IMAGE)),  # use io.BytesIO
-            field_name='tempfile',
-            name='tempfile.png',
-            content_type='image/png',
-            size=len(TEST_IMAGE),
-            charset='utf-8',
-        )
-
-        cls.data = {
-            'first_name': 'Budi',
-            'last_name': 'Istiadi',
-            'address': 'Purworejo',
-        }
-
-        cls.invalid_data = {
-            'first_name': 'Budi',
-            'last_name': 'Istiadi',
-            'address': 'Purworejo',
-            'phone': 'ckjsbffbkw',
-        }
+        """
+        Before TestCase is run, set some data
+        """
+        setup_test_data(cls)
 
     def login(self):
         """
@@ -210,6 +214,7 @@ class ProfileEditTest(TestCase):
         self.assertEqual(self.form.is_valid(), False)
 
 
+# Base64 image for testing Profile photo
 TEST_IMAGE = '''
 iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABmJLR0QA/wD/AP+gvaeTAAAACXBI
 WXMAAABIAAAASABGyWs+AAAACXZwQWcAAAAQAAAAEABcxq3DAAABfElEQVQ4y52TvUuCURTGf5Zg
