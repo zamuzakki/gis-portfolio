@@ -1,3 +1,5 @@
+sudo: required
+
 language: python
 
 addons:
@@ -11,8 +13,8 @@ services:
   - postgresql
 env:
   -DEBUG=True
-  -DATABASE_DEFAULT=postgis:\/\/postgres\@localhost:5432\/gis_portfolio_test
-  -SECRET_KEY=uh837yt78y78Y&\*TYE\*\^\&\$\&\*\(\$Yyn275yw785ywnw389u8y
+  -DATABASE_DEFAULT=postgis://postgres@localhost:5432/gis_portfolio_test
+  -SECRET_KEY=uh837yt78y78Y&*TYE*^&$&*($Yyn275yw785ywnw389u8y
   -ALLOWED_HOST=localhost,0.0.0.0,127.0.0.01
 install:
   - pip install -r requirements.txt
