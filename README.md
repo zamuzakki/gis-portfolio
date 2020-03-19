@@ -1,4 +1,4 @@
-## Simple GIS Portfolio App" [![Build Status](https://travis-ci.com/zamuzakki/gis-portfolio.svg?branch=dev)](https://travis-ci.com/zamuzakki/gis-portfolio)
+## Simple GIS Portfolio App" [![Build Status](https://travis-ci.com/zamuzakki/gis-portfolio.svg?branch=master)](https://travis-ci.com/zamuzakki/gis-portfolio)
 
 > **NOTE**: This open source project is built using [DjangoX](https://github.com/wsvincent/djangox) as template.
 
