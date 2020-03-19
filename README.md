@@ -40,7 +40,7 @@ docker. [See here for help](https://hub.docker.com/r/kartoza/postgis/)
 $ sudo apt install libpq-dev python3-dev python3.6-dev
 ```
 
-3.  Clone the repo and configure the virtual environment:
+4.  Clone the repo and configure the virtual environment:
 
 ```
 $ git clone https://github.com/zamuzakki/gis-portfolio.git
@@ -50,10 +50,10 @@ $ source /venv/bin/activate
 (venv) $ pip3 install -r requirements.txt
 ```
 
-4. Configure environment variables using `.env` file. Check `.env_example`
+5. Configure environment variables using `.env` file. Check `.env_example`
 [here](https://github.com/zamuzakki/gis-portfolio/blob/dev/.env_example).
 
-5.  Set up the initial migration for our custom user models in `users` and migrate the database.
+6.  Set up the initial migration for our custom user models in `users` and migrate the database.
 
 ```
 (venv) $ python manage.py makemigrations users
@@ -61,27 +61,27 @@ $ source /venv/bin/activate
 (venv) $ python manage.py migrate
 ```
 
-5.  Create a superuser:
+7.  Create a superuser:
 
 ```
 (venv) $ python manage.py createsuperuser
 ```
 
-6.  Run test.
+8.  Run test.
 
 ```
 (venv) $ python manage.py test
 ```
 
-7.  Confirm everything is working:
+9.  Confirm everything is working:
 
 ```
 (venv) $ python manage.py runserver
 ```
 
-Load the site at [http://localhost:8000](http://localhost:8000).
+10. Load the site at [http://localhost:8000](http://localhost:8000).
 
-8. Create some Expertise object to be used in Profile via admin page
+11. Create some Expertise object to be used in Profile via admin page
 
 
 ## Additional Notes
