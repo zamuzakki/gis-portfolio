@@ -1,21 +1,22 @@
 language: python
-    addons:
-      postgresql: 10.10
-      apt:
-        packages:
-          - postgresql-10.10-postgis-2.5
-    python:
-      - "3.6"
-    services:
-      - postgresql
-    env:
-      -$DEBUG
-      -$DATABASE_DEFAULT
-      -$SECRET_KEY
-      -$ALLOWED_HOST
-    install:
-      - pip install -r requirements.txt
-    before_script:
-      - psql -c 'create database gis_portfolio_test; create extension postgis;' -U postgres
-    script:
-      - python manage.py test
+
+addons:
+  postgresql: 10.10
+  apt:
+    packages:
+      - postgresql-10.10-postgis-2.5
+python:
+  - "3.6"
+services:
+  - postgresql
+env:
+  -DEBUG=True
+  -DATABASE_DEFAULT=postgis:\/\/postgres\@localhost:5432\/gis_portfolio_test
+  -SECRET_KEY=uh837yt78y78Y&\*TYE\*\^\&\$\&\*\(\$Yyn275yw785ywnw389u8y
+  -ALLOWED_HOST=localhost,0.0.0.0,127.0.0.01
+install:
+  - pip install -r requirements.txt
+before_script:
+  - psql -c 'create database gis_portfolio_test; create extension postgis;' -U postgres
+script:
+  - python manage.py test
