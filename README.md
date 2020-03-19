@@ -28,9 +28,19 @@
 ## First-time setup
 
 1.  Make sure Python 3.6x, Pip, and Virtualenv are already installed. 
-See [here](https://robbinespu.gitlab.io/blog/2019/07/23/Python-36-with-VirtualEnv/) and [here](https://linuxize.com/post/how-to-install-pip-on-ubuntu-18.04/) for help.
+See [here](https://robbinespu.gitlab.io/blog/2019/07/23/Python-36-with-VirtualEnv/) and 
+[here](https://linuxize.com/post/how-to-install-pip-on-ubuntu-18.04/) for help.
 
-2.  Clone the repo and configure the virtual environment:
+2. Make sure PostGIS (and PostgreSQL) is already installed 
+([See here](https://computingforgeeks.com/how-to-install-postgis-on-ubuntu-debian/)). You can also use Kartoza PostGIS
+docker. [See here for help](https://hub.docker.com/r/kartoza/postgis/)
+
+3. Because we want to run Django with PostgreSQL, we need to install required prerequisites.
+```
+$ sudo apt install libpq-dev python3-dev python3.6-dev
+```
+
+3.  Clone the repo and configure the virtual environment:
 
 ```
 $ git clone https://github.com/zamuzakki/gis-portfolio.git
@@ -40,9 +50,6 @@ $ source /venv/bin/activate
 (venv) $ pip3 install -r requirements.txt
 ```
 
-3. Make sure Spatialite or PostGIS (and PostgreSQL) is already installed. You can also use Kartoza PostGIS
-docker. [See here for help](https://hub.docker.com/r/kartoza/postgis/)
-
 4. Configure environment variables using `.env` file. Check `.env_example`
 [here](https://github.com/zamuzakki/gis-portfolio/blob/dev/.env_example).
 
@@ -50,13 +57,20 @@ docker. [See here for help](https://hub.docker.com/r/kartoza/postgis/)
 
 ```
 (venv) $ python manage.py makemigrations users
+(venv) $ python manage.py makemigrations
 (venv) $ python manage.py migrate
 ```
 
-6.  Create a superuser:
+5.  Create a superuser:
 
 ```
 (venv) $ python manage.py createsuperuser
+```
+
+6.  Run test.
+
+```
+(venv) $ python manage.py test
 ```
 
 7.  Confirm everything is working:
