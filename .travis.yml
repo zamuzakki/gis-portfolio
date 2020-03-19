@@ -3,10 +3,10 @@ sudo: required
 language: python
 
 addons:
-  postgresql: 10.10
+  postgresql: 10
   apt:
     packages:
-      - postgresql-10.10-postgis-2.5
+      - postgresql-10-postgis-2.5
 python:
   - "3.6"
 services:
@@ -21,4 +21,5 @@ install:
 before_script:
   - psql -c 'create database gis_portfolio_test; create extension postgis;' -U postgres
 script:
+  -
   - python manage.py test
