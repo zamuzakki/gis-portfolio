@@ -6,6 +6,8 @@ from leaflet.admin import LeafletGeoAdmin
 
 from portfolio.models import Profile, Expertise
 
+admin.site.site_header = 'GIS Portfolio Admin'
+
 @admin.register(Profile)
 class ProfileAdmin(LeafletGeoAdmin):
     model = Profile
